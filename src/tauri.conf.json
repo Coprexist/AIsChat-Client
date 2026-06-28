@@ -2,12 +2,12 @@
   "$schema": "../node_modules/@tauri-apps/cli/schema.json",
   "productName": "AIsChat Client",
   "identifier": "com.coprexist.aischatclient",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "build": {
     "beforeBuildCommand": "",
     "beforeDevCommand": "",
     "devUrl": "https://aischat.datongai.top/",
-    "frontendDist": "frontend"
+    "frontendDist": "../frontend"
   },
   "app": {
     "withGlobalTauri": true,
@@ -36,6 +36,28 @@
     }
   },
   "bundle": {
-    "resources": []
+    "active": true,
+    "targets": "all",
+    "android": {
+      "minSdkVersion": 24
+    },
+    "iOS": {
+      "minimumSystemVersion": "14.0"
+    },
+    "windows": {
+      "nsis": null,
+      "wix": null
+    },
+    "macOS": {
+      "minimumSystemVersion": "10.15",
+      "hardenedRuntime": true
+    },
+    "linux": {
+      "appimage": {
+        "bundleMediaFramework": false
+      },
+      "deb": {},
+      "rpm": {}
+    }
   }
 }

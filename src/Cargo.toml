@@ -1,10 +1,19 @@
 [package]
 name = "aischat-client"
-version = "0.0.0"
+version = "0.0.1"
 description = "AIsChat Client app build with tauri."
 authors = ["Frank Steven"]
 license = "MIT"
 edition = "2024"
+
+[lib]
+name = "aischat_client_lib"
+crate-type = ["cdylib", "staticlib", "rlib"]
+path = "src/lib.rs"
+
+[[bin]]
+name = "aischat-client"
+path = "src/main.rs"
 
 [dependencies]
 tauri = { version = "2", features = ["devtools"] }

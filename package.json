@@ -1,16 +1,23 @@
 {
   "name": "aischat-client",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "author": "Frank Steven",
   "description": "AIsChat Client app build with tauri.",
   "scripts": {
     "dev": "tauri dev",
-    "build": "tauri build"
+    "build": "tauri build",
+    "build:win": "tauri build --bundles nsis msi",
+    "build:mac": "tauri build --bundles dmg app",
+    "build:mac-universal": "tauri build --target universal-apple-darwin",
+    "build:linux": "tauri build --bundles deb appimage rpm",
+    "dev:android": "tauri android dev",
+    "build:android": "tauri android build",
+    "dev:ios": "tauri ios dev",
+    "build:ios": "tauri ios build"
   },
   "license": "MIT",
   "dependencies": {
-    "@tauri-apps/api": "^2.11.1",
-    "tauri": "^0.15.0"
+    "@tauri-apps/api": "^2.11.1"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^2.11.3"
