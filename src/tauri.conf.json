@@ -1,6 +1,6 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/schema.json",
-  "productName": "AIsChat Client",
+  "productName": "AIsChat",
   "identifier": "com.coprexist.aischatclient",
   "version": "0.0.1",
   "build": {
@@ -14,7 +14,7 @@
     "windows": [
       {
         "url": "https://aischat.datongai.top/",
-        "title": "AIsChat Client",
+        "title": "AIsChat",
         "width": 1200,
         "height": 800,
         "fullscreen": false,

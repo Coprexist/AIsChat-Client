@@ -4,6 +4,8 @@
   "author": "Frank Steven",
   "description": "AIsChat Client app build with tauri.",
   "scripts": {
+    "init:android": "tauri android init",
+    "icon": "tauri icon ./icon.png",
     "dev": "tauri dev",
     "build": "tauri build",
     "build:win": "tauri build --bundles nsis msi",
