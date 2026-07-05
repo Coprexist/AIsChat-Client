@@ -2,107 +2,122 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>AIsChat Client</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; overflow: hidden; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       color: white;
-      margin-top: 20px;
     }
     .container {
       text-align: center;
       padding: 40px;
+      max-width: 100%;
+      width: 100%;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
-    .logo {
-      font-size: 48px;
-      margin-bottom: 20px;
-    }
-    .title {
-      font-size: 28px;
-      font-weight: 600;
-      margin-bottom: 16px;
-    }
-    .subtitle {
-      font-size: 16px;
-      opacity: 0.9;
-      margin-bottom: 32px;
-    }
+    .logo-img { width: 80px; height: 80px; margin-bottom: 20px; border-radius: 16px; }
+    .title { font-size: 28px; font-weight: 600; margin-bottom: 16px; }
+    .subtitle { font-size: 16px; opacity: 0.9; margin-bottom: 32px; }
     .spinner {
-      width: 50px;
-      height: 50px;
+      width: 50px; height: 50px;
       border: 4px solid rgba(255, 255, 255, 0.3);
       border-top-color: white;
       border-radius: 50%;
       animation: spin 1s linear infinite;
       margin: 0 auto 20px;
     }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-    .loading-text {
-      font-size: 14px;
-      opacity: 0.8;
-    }
-    .error {
-      display: none;
-      margin-top: 20px;
-      padding: 16px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 8px;
-      font-size: 14px;
-    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-text { font-size: 14px; opacity: 0.8; }
+    .error-icon-img { width: 64px; height: 64px; margin-bottom: 20px; border-radius: 14px; }
+    .error-message { font-size: 16px; margin-bottom: 8px; }
+    .error-detail { font-size: 14px; opacity: 0.8; margin-bottom: 32px; }
     .retry-btn {
-      margin-top: 16px;
-      padding: 10px 24px;
-      background: white;
-      color: #667eea;
-      border: none;
-      border-radius: 20px;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
+      padding: 12px 32px; background: white; color: #667eea;
+      border: none; border-radius: 25px; font-size: 16px; font-weight: 600;
+      cursor: pointer; display: flex; align-items: center; gap: 8px;
     }
-    .retry-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    .retry-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+    .retry-btn.retrying { pointer-events: none; opacity: 0.7; }
+    .btn-spinner {
+      width: 20px; height: 20px;
+      border: 3px solid rgba(102, 126, 234, 0.3);
+      border-top-color: #667eea;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
     }
+    .hidden { display: none !important; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="logo">🤖</div>
-    <div class="title">AIsChat Client</div>
-    <div class="subtitle">让 AI 拥有自己的生命节奏</div>
-    <div class="spinner"></div>
-    <div class="loading-text">正在连接服务器...</div>
-    <div class="error" id="error">
-      <div>无法连接到服务器</div>
-      <div style="margin-top: 8px; font-size: 12px; opacity: 0.8;">请检查网络连接</div>
-      <button class="retry-btn" onclick="location.reload()">重试</button>
+  <div class="container" id="landingContainer">
+    <div id="loadingState">
+      <img class="logo-img" src="icon.png" alt="AIsChat">
+      <div class="title">AIsChat Client</div>
+      <div class="subtitle">让 AI 拥有自己的生命节奏</div>
+      <div class="spinner"></div>
+      <div class="loading-text">正在连接服务器...</div>
+    </div>
+    <div id="errorState" class="hidden">
+      <img class="error-icon-img" src="icon.png" alt="AIsChat">
+      <div class="title">连接失败</div>
+      <div class="error-message" id="errorMessage">网络连接异常</div>
+      <div class="error-detail" id="errorDetail">请检查网络设置后重试</div>
+      <button class="retry-btn" id="retryBtn"><span>&#x1F504;</span><span>重试连接</span></button>
     </div>
   </div>
   <script>
-    setTimeout(() => {
-      const spinner = document.querySelector('.spinner');
-      const loadingText = document.querySelector('.loading-text');
-      const error = document.getElementById('error');
-      spinner.style.display = 'none';
-      loadingText.style.display = 'none';
-      error.style.display = 'block';
-    }, 10000);
+    (function() {
+      var SERVER_URL = 'https://aischat.datongai.top/';
+      var MAX_RETRIES = 3;
+      var retries = 0;
+      var timeoutId = null;
+      var loadingState = document.getElementById('loadingState');
+      var errorState = document.getElementById('errorState');
+      var errorMessage = document.getElementById('errorMessage');
+      var errorDetail = document.getElementById('errorDetail');
+      var retryBtn = document.getElementById('retryBtn');
+      function showLoading() { loadingState.classList.remove('hidden'); errorState.classList.add('hidden'); }
+      function showError(m, d) { loadingState.classList.add('hidden'); errorState.classList.remove('hidden'); errorMessage.textContent = m; errorDetail.textContent = d; }
+      function startApp() {
+        window.location.href = SERVER_URL;
+      }
+      function tryConnect() {
+        showLoading(); retries++;
+        timeoutId = setTimeout(function() {
+          if (retries >= MAX_RETRIES) { showError('连接持续失败', '请检查网络设置或稍后再试'); }
+          else { showError('连接超时', '第 ' + retries + '/' + MAX_RETRIES + ' 次'); retryBtn.click(); }
+        }, 10000);
+        fetch(SERVER_URL, { method: 'HEAD', signal: AbortSignal.timeout(8000) })
+          .then(function(r) { clearTimeout(timeoutId); if (r.ok) { startApp(); } else { throw new Error('HTTP ' + r.status); } })
+          .catch(function(e) { clearTimeout(timeoutId); if (retries >= MAX_RETRIES) { showError('连接失败', '错误: ' + (e.message || '')); } else { setTimeout(tryConnect, 2000); } });
+      }
+      retryBtn.addEventListener('click', function() {
+        retryBtn.classList.add('retrying');
+        retryBtn.innerHTML = '<div class="btn-spinner"></div><span>连接中...</span>';
+        fetch(SERVER_URL, { method: 'HEAD', signal: AbortSignal.timeout(8000) })
+          .then(function(r) { if (r.ok) { startApp(); } else { throw new Error('HTTP ' + r.status); } })
+          .catch(function(e) {
+            retryBtn.classList.remove('retrying');
+            retryBtn.innerHTML = '<span>&#x1F504;</span><span>重试连接</span>';
+            retries++;
+            if (retries >= MAX_RETRIES) { showError('连接持续失败', '请检查网络设置或稍后再试'); }
+            else { errorMessage.textContent = '连接失败 (尝试 ' + retries + '/' + MAX_RETRIES + ')'; errorDetail.textContent = '错误: ' + (e.message || ''); }
+          });
+      });
+      tryConnect();
+    })();
   </script>
 </body>
 </html>

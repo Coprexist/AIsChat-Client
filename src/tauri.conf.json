@@ -2,7 +2,7 @@
   "$schema": "../node_modules/@tauri-apps/cli/schema.json",
   "productName": "AIsChat",
   "identifier": "com.coprexist.aischatclient",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "build": {
     "beforeBuildCommand": "",
     "beforeDevCommand": "",
@@ -11,26 +11,18 @@
   },
   "app": {
     "withGlobalTauri": true,
-    "windows": [
-      {
-        "url": "https://aischat.datongai.top/",
-        "title": "AIsChat",
-        "width": 1200,
-        "height": 800,
-        "fullscreen": false,
-        "resizable": true,
-        "center": true,
-        "minWidth": 800,
-        "minHeight": 600
-      }
-    ],
+    "windows": [],
     "security": {
       "csp": "default-src 'self' https://aischat.datongai.top; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://aischat.datongai.top; style-src 'self' 'unsafe-inline' https://aischat.datongai.top; img-src 'self' data: blob: https://aischat.datongai.top; connect-src 'self' https://aischat.datongai.top https://tauri.localhost http://tauri.localhost; font-src 'self' https://aischat.datongai.top",
       "capabilities": [
         {
           "identifier": "main-default",
-          "windows": ["main"],
-          "permissions": ["core:default"]
+          "windows": [
+            "main"
+          ],
+          "permissions": [
+            "core:default"
+          ]
         }
       ]
     }
@@ -38,6 +30,13 @@
   "bundle": {
     "active": true,
     "targets": "all",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
     "android": {
       "minSdkVersion": 24
     },

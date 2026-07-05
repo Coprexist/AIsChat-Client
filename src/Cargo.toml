@@ -1,6 +1,6 @@
 [package]
 name = "aischat-client"
-version = "0.0.1"
+version = "0.1.0"
 description = "AIsChat Client app build with tauri."
 authors = ["Frank Steven"]
 license = "MIT"
