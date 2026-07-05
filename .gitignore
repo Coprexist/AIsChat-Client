@@ -14,6 +14,11 @@ Cargo.lock
 # Tauri
 src/target/
 src/gen/
+src/icons/
+
+# Android signing
+keystore.properties
+aischat-android-key.jks
 
 # Node.js
 npm-debug.log*
