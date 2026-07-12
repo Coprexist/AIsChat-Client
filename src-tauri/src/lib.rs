@@ -102,17 +102,17 @@ pub fn run() {
       .min_inner_size(800.0, 600.0)
       .resizable(true)
       .initialization_script(ADAPTATION_SCRIPT)
+      .on_navigation(|url| {
+        let allowed = url.scheme() == "https"
+          || url.scheme() == "http"
+          || url.scheme() == "tauri";
+        if !allowed {
+          log::warn!("Blocked navigation to: {}", url);
+        }
+        allowed
+      })
       .build()?;
       Ok(())
-    })
-    .on_navigation(|url| {
-      let allowed = url.scheme() == "https"
-        || url.scheme() == "http"
-        || url.scheme() == "tauri";
-      if !allowed {
-        log::warn!("Blocked navigation to: {}", url);
-      }
-      allowed
     })
     .invoke_handler(tauri::generate_handler![
       io_bridge_call,

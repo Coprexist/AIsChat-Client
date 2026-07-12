@@ -2,7 +2,8 @@
   "name": "aischat-client",
   "version": "0.1.0",
   "author": "Frank Steven",
-  "description": "AIsChat Client app build with tauri.","scripts": {
+  "description": "AIsChat Client app build with tauri.",
+  "scripts": {
     "deps": "yarn",
     "icon": "hound-tauri-build icon all",
     "icon:desktop": "hound-tauri-build icon desktop",
@@ -64,8 +65,10 @@
   },
   "devDependencies": {
     "@tauri-apps/cli": "^2.11.2",
+    "hound-tauri-build": "0.2.3",
     "husky": "^9.1.7",
     "ink": "5",
-    "hound-tauri-build": "0.2.3"
+    "react": "18",
+    "react-dom": "18"
   }
 }
