@@ -3,22 +3,13 @@ node_modules/
 
 # Build outputs
 dist/
-target/
-build/
+coverage
+release
 
-# Rust
-**/*.rs.bk
-Cargo.lock
-*.pdb
-
-# Tauri
-src/target/
-src/gen/
-src/icons/
-
-# Android signing
-keystore.properties
-aischat-android-key.jks
+# Environment variables
+.env
+.env.local
+.env.*.local
 
 # Node.js
 npm-debug.log*
@@ -27,22 +18,11 @@ yarn-error.log*
 .npm
 .yarn-integrity
 
-# Environment variables
-.env
-.env.local
-.env.*.local
-
 # IDEs and editors
-.vscode/
 .idea/
 *.swp
 *.swo
 *~
-.DS_Store
-
-# Logs
-logs/
-*.log
 
 # OS generated files
 .DS_Store
@@ -53,6 +33,18 @@ logs/
 ehthumbs.db
 Thumbs.db
 
+# Logs
+logs/
+*.log
+
 # Temporary files
 *.tmp
 *.temp
+temp-icon-gen/
+
+# Android signing key (DO NOT COMMIT)
+keys/
+*.jks
+*.keystore
+*.pkcs12
+debug.keystore
